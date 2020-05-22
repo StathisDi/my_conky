@@ -1,0 +1,67 @@
+# By Dimitrios Stathis
+# Based on Jesse_Avalos 
+
+background yes
+use_xft yes
+xftfont Roboto:size=9
+xftalpha 0.8
+update_interval 1
+total_run_times 0
+own_window_class Conky
+own_window yes
+own_window_transparent no
+own_window_hints undecorated,sticky,skip_taskbar,skip_pager,below
+own_window_argb_visual yes
+double_buffer yes
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+stippled_borders 0
+#border_margin 5
+#border_width 1
+default_color FFFFFF
+default_shade_color 000000
+default_outline_color 000000
+alignment top_right
+minimum_size 400 100
+maximum_width 2000
+gap_x 10
+gap_y 70
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+net_avg_samples 2
+short_units yes
+text_buffer_size 2048
+use_spacer none
+override_utf8_locale yes
+color1 212021
+color2 E8E1E6
+color3 E82A2A
+own_window_argb_value 100
+own_window_colour 000000
+lua_load ~/.conky/my_conky.lua
+lua_draw_hook_post conky_main
+
+TEXT
+#${offset 0}${voffset 5}${font GeosansLight:size=25} Testing ${hwmon 0 temp 1}°C NVME
+#${offset 0}${voffset 5}${font GeosansLight:size=25} Testing ${hwmon 2 temp 1}°C CPU
+#${offset 0}${voffset 5}${font GeosansLight:size=25} Testing ${nvidia temp}°C GPU temp
+#${offset 0}${voffset 5}${font GeosansLight:size=25} Testing ${nvidia memfreq}°C mem frequency
+#${offset 0}${voffset 5}${font GeosansLight:size=25} Testing ${nvidia gpufreq}°C gpu frequency
+#${offset 0}${voffset 5}${font GeosansLight:size=25} Testing ${execi 10 sensors | grep 'Core 0' | cut -c17-18}°C
+#${offset 0}${voffset 5} ${execigraph 1 "sensors | grep 'Core 0' | cut -c17-18"} graph
+#${image .conky/line.png -p 350,26 -s 10x189}
+#
+#
+#
+${offset 300}${voffset 0}${font GeosansLight:size=25}Systems${font GeosansLight:size=22}
+#
+${offset 165}${voffset 10}${font GeosansLight:size=25} Today ${voffset -10}${goto 280} ${font Dingytwo:size=17}M$font ${voffset -11}${font GeosansLight:size=15}$acpitemp°C
+#
+${offset 2}${voffset 0}${font GeosansLight:light:size=70}${time %H:%M}${font GeosansLight:light:size=20}${time :%S} ${voffset -56}${goto 280} ${font Dingytwo:size=17}7$font ${voffset -11}${font GeosansLight:size=15}${cpu cpu0}% / 100%
+#
+${offset 90}${voffset 65}${font GeosansLight:size=17}${time %A, %d %B} ${goto 281.5}${voffset -61} ${font Dingytwo:size=17}O$font ${voffset -11} ${font GeosansLight:size=15}$memfree / $memmax
+#
+${voffset 80}
