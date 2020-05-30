@@ -27,7 +27,7 @@ default_color FFFFFF
 default_shade_color 000000
 default_outline_color 000000
 alignment top_right
-minimum_size 400 100
+minimum_size 430 872
 maximum_width 2000
 gap_x 10
 gap_y 70
@@ -74,7 +74,7 @@ ${offset 90}${voffset 65}${font GeosansLight:size=17}${time %A, %d %B}
 #${offset 2}${voffset 20}${font Dingytwo:size=17}6${font GeosansLight:size=12.5}${voffset -6}  CPU Info
 ${voffset 20}
 ${offset 80}${voffset 10}${font GeosansLight:size=15} ${execi 1 "sensors | grep 'Core 0' | cut -c17-18"}°C${goto 280}${font GeosansLight:size=15}${cpu cpu0}% / 100%
-${goto 280}${voffset 5}${font GeosansLight:size=15}$memfree / $memmax
+${goto 280}${voffset 200}${font GeosansLight:size=15}$memfree / $memmax
 
 
 
@@ -83,3 +83,14 @@ ${goto 280}${voffset 5}${font GeosansLight:size=15}$memfree / $memmax
 
 
 
+
+
+
+#TODO set colors
+${font GeosansLight:size=15}Process${goto 160}CPU%${goto 250}Mem%${goto 340}User
+${voffset -10}
+${top name 1}${goto 160}${top cpu 1}${goto 250}${top mem 1}${goto 340}${top user 1}
+${top name 2}${goto 160}${top cpu 2}${goto 250}${top mem 2}${goto 340}${top user 2}
+${top name 3}${goto 160}${top cpu 3}${goto 250}${top mem 3}${goto 340}${top user 3}
+${top name 4}${goto 160}${top cpu 4}${goto 250}${top mem 4}${goto 340}${top user 4}
+${top name 5}${goto 160}${top cpu 5}${goto 250}${top mem 5}${goto 340}${top user 5}

@@ -322,6 +322,13 @@ function image (im)--
 	show = nil
 end
 
+function cpu_graph(data, table_length)
+    for i = 1, table_length do
+		print (data[i])
+    end
+    return val
+end
+
 function conky_main ()
     red, green, blue, alpha = 1, 1, 1, 1
     font_slant = CAIRO_FONT_SLANT_NORMAL
@@ -379,7 +386,7 @@ function conky_main ()
     cairo_stroke (cr)
 
     ----------------------------
-    -- Create GPU line
+    -- Create Memory line
     ----------------------------
     line_width    = 1.5
     line_cap      = CAIRO_LINE_CAP_ROUND
@@ -412,6 +419,60 @@ function conky_main ()
     -- draw
     cairo_close_path(cr)
     cairo_stroke (cr)
+
+    ----------------------------
+    -- Create GPU line
+    ----------------------------
+    line_width    = 1.5
+    line_cap      = CAIRO_LINE_CAP_ROUND
+    red, green, blue, alpha = 1, 1, 1, 1
+    startx    = 5
+    endx      = 6
+    starty    = 500
+    endy      = 500
+    ----------------------------
+    conky_line (line_width, line_cap, red, green, blue, alpha, startx, starty, endx, endy, cr)
+    ----------------------------
+    startx    = 115
+    endx      = 425
+    ----------------------------
+    conky_line (line_width, line_cap, red, green, blue, alpha, startx, starty, endx, endy, cr)
+
+    cairo_stroke (cr)
+    center_x    = 105
+    center_y    = starty
+    radius      = 10
+    start_angle = -90 * math.pi /180
+    end_angle   = 90 * math.pi /180 -- Same thing as 360 degrees.
+    cairo_arc (cr, center_x, center_y, radius, start_angle,     end_angle)
+
+    center_x    = 17
+    start_angle = 90 * math.pi /180
+    end_angle   = -90 * math.pi /180 -- Same thing as 360 degrees.
+    cairo_arc (cr, center_x, center_y, radius, start_angle,     end_angle)
+
+    -- draw
+    cairo_close_path(cr)
+    cairo_stroke (cr)
+
+    ----------------------------
+    -- Create Top line
+    ----------------------------
+    line_width    = 1.5
+    line_cap      = CAIRO_LINE_CAP_ROUND
+    red, green, blue, alpha = 1, 1, 1, 1
+    startx    = 5
+    endx      = 425
+    starty    = 700
+    endy      = 700
+    ----------------------------
+    conky_line (line_width, line_cap, red, green, blue, alpha, startx, starty, endx, endy, cr)
+    starty    = 733
+    endy      = 733
+    ----------------------------
+    conky_line (line_width, line_cap, red, green, blue, alpha, startx, starty, endx, endy, cr)
+    -- draw
+    cairo_stroke (cr)
     ----------------------------
     -- Create CPU text
     ----------------------------
@@ -425,6 +486,87 @@ function conky_main ()
     cr = conky_text ("CPU Info", cr, font, font_size, xpos, ypos, red, green, blue, alpha, font_size, font_face)
 
     ----------------------------
+    -- Create MEMORY text
+    ----------------------------
+    -- TODO
+    ----------------------------
+
+    ----------------------------
+    -- Create GPU text
+    ----------------------------
+    -- TODO
+    ----------------------------
+
+    ----------------------------
+    -- Bars and meters
+    ----------------------------
+    -- CPU meters
+    ----------------------------
+    -- TODO
+    local updates = tonumber (conky_parse ('${updates}'))
+    table_length = 30
+    if updates  ==  4 then
+        cpu0val   = {}
+        cpu0temp  = {}
+        cpu1val   = {}
+        cpu1temp  = {}
+        cpu2val   = {}
+        cpu2temp  = {}
+        cpu3val   = {}
+        cpu3temp  = {}
+        table_length = 0
+	elseif updates > 5 then
+        for i = 1, tonumber(table_length) do
+            if cpu0val[i+1] == nil then
+                cpu0val[i + 1]  = 0
+                cpu1val[i + 1]  = 0
+                cpu2val[i + 1]  = 0
+                cpu3val[i + 1]  = 0
+                cpu0temp[i + 1] = 0
+                cpu1temp[i + 1] = 0
+                cpu2temp[i + 1] = 0
+                cpu3temp[i + 1] = 0
+            end
+
+            cpu0val [i] = cpu0val [i + 1]
+            cpu1val [i] = cpu1val [i + 1]
+            cpu2val [i] = cpu2val [i + 1]
+            cpu3val [i] = cpu3val [i + 1]
+            cpu0temp[i] = cpu0temp[i + 1]
+            cpu1temp[i] = cpu1temp[i + 1]
+            cpu2temp[i] = cpu2temp[i + 1]
+            cpu3temp[i] = cpu3temp[i + 1]
+
+            if i == table_length then
+                cpu0val [table_length] = tonumber (conky_parse ("${cpu cpu0}"))
+                cpu1val [table_length] = tonumber (conky_parse ("${cpu cpu1}"))
+                cpu2val [table_length] = tonumber (conky_parse ("${cpu cpu2}"))
+                cpu3val [table_length] = tonumber (conky_parse ("${cpu cpu3}"))
+                cpu0temp[table_length] = tonumber (conky_parse ("${exec sensors | grep 'Core 0' | cut -c17-18}"))
+                cpu1temp[table_length] = tonumber (conky_parse ("${exec sensors | grep 'Core 1' | cut -c17-18}"))
+                cpu2temp[table_length] = tonumber (conky_parse ("${exec sensors | grep 'Core 2' | cut -c17-18}"))
+                cpu3temp[table_length] = tonumber (conky_parse ("${exec sensors | grep 'Core 3' | cut -c17-18}"))
+            end
+        end
+    end
+    --cpu_graph(cpu0val, table_length)
+    --cpu_graph(cpu1val, table_length)
+    --cpu_graph(cpu2val, table_length)
+    --cpu_graph(cpu3val, table_length)
+    --cpu_graph(cpu0temp, table_length)
+    --cpu_graph(cpu1temp, table_length)
+    --cpu_graph(cpu2temp, table_length)
+    --cpu_graph(cpu3temp, table_length)
+    ----------------------------
+    -- Memory Bar
+    ----------------------------
+    -- TODO
+    ----------------------------
+    -- GPU bats and meters
+    ----------------------------
+    -- TODO
+    ----------------------------
+
     -- Weather figures
     char_today,num_c_today    = retrieve_weather_fig("01d")
     char_day1,num_c_day1      = retrieve_weather_fig("01d")
@@ -448,7 +590,7 @@ function conky_main ()
     --image ({x=270, y=15, h = 60, w = 60, file = image_today})
 
     font_size = 30
-    xpos, ypos = 350, 50
+    xpos, ypos = 345, 50
     cr = conky_text (temp_today, cr, font, font_size, xpos, ypos, red, green, blue, alpha, font_size, font_face)
 
 
